@@ -6,9 +6,9 @@ logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message
 
 
 class Cocinero(threading.Thread):
-    def __init__(self):
+    def __init__(self,numero):
         super().__init__()
-        self.name = f'Cocinero'
+        self.name = f'Cocinero {numero}'
 
     def run(self):
         global platosDisponibles
@@ -48,8 +48,14 @@ platosDisponibles = 3
 # cocinero = Cocinero()
 # cocinero.start()
 
-cocinero = Cocinero()
-cocinero.start()
+#cocinero1 = Cocinero(1)
+#cocinero1.start()
+
+#cocinero2 = Cocinero(2)
+#cocinero2.start()
+
+for i in range(10):
+    Cocinero(i).start()
 
 for i in range(34):
     Comensal(i).start()
