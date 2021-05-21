@@ -27,26 +27,26 @@ class Comensal(threading.Thread):
         self.name = f'Comensal {numero}'
 
     def run(self):
-        global platosDisponibles
-
-        semaforoPlato.acquire()
+        comensal.acquire()
         try:
+            global platosDisponibles
+            semaforoPlato.acquire()
             # if platosDisponibles == 0:
-            while platosDisponibles == 0:
-                semaforoCocinero.release()
-                semaforoPlato.acquire()
-            semaforoComensal.acquire()
             try:
+                while platosDisponibles == 0:
+                    semaforoCocinero.release()
+                    semaforoPlato.acquire()
                 platosDisponibles -= 1
                 logging.info(f'¡Qué rico! Quedan {platosDisponibles} platos')
             finally:
-                semaforoComensal.release()
+                semaforoPlato.release()
         finally:
-            semaforoPlato.release()
+            comensal.release()
 
-semaforoPlato = threading.Semaphore(2)
+
+semaforoPlato = threading.Semaphore(1)
 semaforoCocinero = threading.Semaphore(0)
-semaforoComensal = threading.Semaphore(1)
+comensal = threading.Semaphore(2)
 
 platosDisponibles = 3
 
